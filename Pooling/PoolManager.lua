@@ -1,13 +1,17 @@
--- Register the behaviour
+--A class that manages pools.
 behaviour("PoolManager")
 
 _poolManager = nil
 
 function PoolManager:Awake()
 	self.pools = {}
+
+	--Store a global reference to itself.
+	--IMPORTANT: References like these are only accessible in scripts from the same .rfc/rfl! As such each mod will have its own pool manager! 
 	_poolManager = self
 end
 
+--Returns a pool of the given name. If no pool exists, create a new one.
 function PoolManager:GetPool(poolName)
 	if self.pools == nil then self.pools = {} end
 
@@ -40,10 +44,14 @@ end
 
 --Initialize the pool's prefab. This is important! Always call this before doing anything else with the pool.
 --A object type is required for the pool to know what kind of objects we're dealing with in the pool. If no type is given, the pool will default to GameObjects.
+--Can be passed a userdata or a string. If a string is passed, it uses it to register the behaviour.
 function Pool:initialize(prefab, objectType)
 	if self.prefab then
 		print("<color=red> ERROR: [Pool:initialize] You cannot change a pool's prefab!</color>")
 		return 
+	end
+	if prefab == nil then
+		print("<color=red> ERROR: [Pool:initialize] You must initialize a pool with a prefab!</color>")
 	end
 
 	self.prefab = prefab
@@ -52,6 +60,8 @@ function Pool:initialize(prefab, objectType)
 		if luaType == "userdata" then
 			self.objectType = objectType
 		elseif luaType == "string" then
+			--Safe regardless if the behaviour has already been defined or not.
+			--It just works.
 			self.objectType = behaviour(objectType)
 			print("[Pool:initialize]Registered behaviour of type " .. objectType)
 		end

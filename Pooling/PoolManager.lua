@@ -107,13 +107,15 @@ function Pool:requestObject()
 	local obj = nil
 	if self.stackCount == 0 then
 		if self.objectType then
-			obj = GameObject.Instantiate(self.prefab).GetComponent(self.objectType)
+			obj = GameObject.Instantiate(self.prefab).GetComponent(self.objectType)	
 		else
 			obj = GameObject.Instantiate(self.prefab)
 		end
-		
+
 		if obj == nil then
 			print("<color=red> ERROR: [Pool:requestObject] Prefab requested is not the correct type!</color>")
+		else
+			--print("Instantiated new instance of " .. self.prefab.name)
 		end
 	else
 		obj = table.remove(self.stack)

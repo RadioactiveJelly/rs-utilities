@@ -1,5 +1,4 @@
 -- Sound manager for playing a sound per shot.
--- Requires a DataContainer labeled as "SoundData"
 -- Uses the AudioSourceManager object to detach its audio sources for better sound handling when a weapon is swapped/destroyed
 behaviour("SoundManager")
 
@@ -15,7 +14,6 @@ function SoundManager:Start()
 		if not weapon.user.isPlayer then
 			self.AudioSource = self.targets.TPAudioSource
 			self.AudioSource.SetOutputAudioMixer(AudioMixer.World)
-			print("User is not a player")
 		else
 			self.AudioSource = self.targets.FPAudioSource
 			self.AudioSource.SetOutputAudioMixer(AudioMixer.FirstPerson)
